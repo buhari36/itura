@@ -2,6 +2,8 @@ import "./home.css";
 import Logo from "../assets/Logo.svg";
 import Rectangle from "../assets/Rectangle.png";
 import { useEffect, useState } from "react";
+import React, { useRef } from "react";
+import emailjs from "emailjs-com";
 
 const Home = () => {
   const [enteredName, setEnteredName] = useState("");
@@ -19,6 +21,44 @@ const Home = () => {
       alert("Mail Sent");
     }
   }, [mail]);
+
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    setEnteredNameTouched(true);
+    setEnteredEmailTouched(true);
+
+    if (!enteredNameIsValid) {
+      return;
+    }
+
+    if (!enteredEmailIsValid) {
+      return;
+    }
+
+    setEnteredName("");
+    setEnteredEmail("");
+    setEnteredNameTouched(false);
+    setEnteredEmailTouched(false);
+
+    emailjs
+      .sendForm(
+        "service_mi18pyn",
+        "template_4jc7xrk",
+        form.current,
+        "n4oZWccTxD4eiyYH7"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  };
 
   const enteredNameIsValid = enteredName.trim() !== "";
   const enteredEmailIsValid = enteredEmail.includes("@");
@@ -51,25 +91,9 @@ const Home = () => {
     setEnteredEmailTouched(true);
   };
 
-  const formSubmissionHandler = (event) => {
-    event.preventDefault();
+  // const formSubmissionHandler = (event) => {
 
-    setEnteredNameTouched(true);
-    setEnteredEmailTouched(true);
-
-    if (!enteredNameIsValid) {
-      return;
-    }
-
-    if (!enteredEmailIsValid) {
-      return;
-    }
-
-    setEnteredName("");
-    setEnteredEmail("");
-    setEnteredNameTouched(false);
-    setEnteredEmailTouched(false);
-  };
+  // };
 
   const nameInputClasses = nameInputIsInvalid
     ? "form-control invalid"
@@ -94,12 +118,13 @@ const Home = () => {
               launch
             </p>
           </div>
-          <form onSubmit={formSubmissionHandler}>
+          <form ref={form} onSubmit={sendEmail}>
             <div className="inputs ">
               <div className={nameInputClasses}>
                 <input
                   type="text"
                   placeholder="Pharmacy name"
+                  name="name"
                   required
                   value={enteredName}
                   onChange={nameInputChangeHandler}
@@ -111,8 +136,9 @@ const Home = () => {
               </div>
               <div className={emailInputClasses}>
                 <input
-                  type="text"
+                  type="email"
                   placeholder="Pharmacy Email"
+                  name="email"
                   required
                   value={enteredEmail}
                   onChange={emailInputChangeHandler}
