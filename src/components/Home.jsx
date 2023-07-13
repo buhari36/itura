@@ -4,6 +4,7 @@ import Rectangle from "../assets/Rectangle.png";
 import { useEffect, useState } from "react";
 import React, { useRef } from "react";
 import emailjs from "emailjs-com";
+import { Helmet } from "react-helmet";
 
 const Home = () => {
   const [enteredName, setEnteredName] = useState("");
@@ -105,6 +106,14 @@ const Home = () => {
 
   return (
     <div className="container container-home">
+      <Helmet>
+        <meta
+          name="description"
+          content="Get Early Access to IturaRx. Be one of the first to use the IturaRX Pharmacy software when we
+    launch"
+        />
+        <meta name="keywords" content="iturarx" />
+      </Helmet>
       <div className="home">
         <div className="left">
           <div className="image">
