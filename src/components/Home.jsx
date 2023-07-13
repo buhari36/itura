@@ -46,10 +46,10 @@ const Home = () => {
 
     emailjs
       .sendForm(
-        "service_mi18pyn",
-        "template_4jc7xrk",
+        "service_r57r28g",
+        "template_9u1x3y9",
         form.current,
-        "n4oZWccTxD4eiyYH7"
+        "mU7PfFg54TPxeWP62"
       )
       .then(
         (result) => {
